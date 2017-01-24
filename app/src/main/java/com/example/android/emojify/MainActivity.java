@@ -41,6 +41,9 @@ import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
 
+    // TODO (1): Create a Java class called Emojifier
+        // TODO (2): Create a static method in the Emojifier class called detectFaces() which detects and logs the number of faces in a given bitmap.
+
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final int REQUEST_STORAGE_PERMISSION = 1;
 
@@ -180,6 +183,8 @@ public class MainActivity extends AppCompatActivity {
 
         // Resample the saved image to fit the ImageView
         mResultsBitmap = BitmapUtils.resamplePic(this, mTempPhotoPath);
+
+        // TODO (3): Call the new detectFaces() method, passing in the resampled bitmap to detect the faces in the picture.
 
         // Set the new bitmap to the ImageView
         mImageView.setImageBitmap(mResultsBitmap);
