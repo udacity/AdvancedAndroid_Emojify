@@ -41,6 +41,8 @@ class Emojifier {
      */
     static void detectFaces(Context context, Bitmap picture) {
 
+        // TODO (3): Change the name of the detectFaces() method to detectFacesAndOverlayEmoji() and the return type from void to Bitmap
+
         // Create the face detector, disable tracking and enable classifications
         FaceDetector detector = new FaceDetector.Builder(context)
                 .setTrackingEnabled(false)
@@ -56,6 +58,7 @@ class Emojifier {
         // Log the number of faces
         Log.d(LOG_TAG, "detectFaces: number of faces = " + faces.size());
 
+        // TODO (7): Create a variable called resultBitmap and initialize it to the original picture bitmap passed into the detectFacesAndOverlayEmoji() method
         // If there are no faces detected, show a Toast message
         if(faces.size() == 0) {
             Toast.makeText(context, R.string.no_faces_message, Toast.LENGTH_SHORT).show();
@@ -67,12 +70,17 @@ class Emojifier {
                 // Get the appropriate emoji for each face
                 whichEmoji(face);
 
+                // TODO (4): Create a variable called emojiBitmap to hold the appropriate Emoji bitmap and remove the call to whichEmoji()
+                // TODO (5): Create a switch statement on the result of the whichEmoji() call, and assign the proper emoji bitmap to the variable you created
+                // TODO (8): Call addBitmapToFace(), passing in the resultBitmap, the emojiBitmap and the Face  object, and assigning the result to resultBitmap
+
             }
         }
 
 
         // Release the detector
         detector.release();
+        // TODO (9): Return the resultBitmap
     }
 
 
@@ -85,6 +93,7 @@ class Emojifier {
 
     private static void whichEmoji(Face face) {
 
+        // TODO (1): Change the return type of the whichEmoji() method from void to Emoji.
         // Log all the probabilities
         Log.d(LOG_TAG, "whichEmoji: smilingProb = " + face.getIsSmilingProbability());
         Log.d(LOG_TAG, "whichEmoji: leftEyeOpenProb = "
@@ -126,8 +135,11 @@ class Emojifier {
 
         // Log the chosen Emoji
         Log.d(LOG_TAG, "whichEmoji: " + emoji.name());
+
+        // TODO (2): Have the method return the selected Emoji type.
     }
-    
+
+    // TODO (6) Create a method called addBitmapToFace() which takes the background bitmap, the Emoji bitmap, and a Face object as arguments and returns the combined bitmap with the Emoji over the face.
     // Enum for all possible Emojis
     private enum Emoji {
         SMILE,
