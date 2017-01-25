@@ -30,6 +30,7 @@ import com.google.android.gms.vision.face.FaceDetector;
 
 class Emojifier {
 
+    // TODO (3): Change all Log statements to Timber logs and remove the LOG_TAG variable
     private static final String LOG_TAG = Emojifier.class.getSimpleName();
 
     private static final float EMOJI_SCALE_FACTOR = .9f;
