@@ -35,6 +35,8 @@ class Emojifier {
     private static final float EMOJI_SCALE_FACTOR = .9f;
     private static final double SMILING_PROB_THRESHOLD = .15;
     private static final double EYE_OPEN_PROB_THRESHOLD = .5;
+    private static final float TURN_DOWN_FOR_WHAT_SCALE_FACTOR = 1.05f;
+    private static boolean TURN_DOWN_FOR_WHAT = false;
 
     /**
      * Method for detecting faces in a bitmap, and drawing emoji depending on the facial
@@ -43,8 +45,9 @@ class Emojifier {
      * @param context The application context.
      * @param picture The picture in which to detect the faces.
      */
-    static Bitmap detectFacesandOverlayEmoji(Context context, Bitmap picture) {
+    static Bitmap detectFacesandOverlayEmoji(Context context, Bitmap picture, boolean turnDownForWhat) {
 
+        TURN_DOWN_FOR_WHAT = turnDownForWhat;
         // Create the face detector, disable tracking and enable classifications
         FaceDetector detector = new FaceDetector.Builder(context)
                 .setTrackingEnabled(false)
@@ -81,6 +84,10 @@ class Emojifier {
                     case FROWN:
                         emojiBitmap = BitmapFactory.decodeResource(context.getResources(),
                                 R.drawable.frown);
+                        break;
+                    case TURN_DOWN_FOR_WHAT:
+                        emojiBitmap = BitmapFactory.decodeResource(context.getResources(),
+                                R.drawable.turn_down_for_what);
                         break;
                     case LEFT_WINK:
                         emojiBitmap = BitmapFactory.decodeResource(context.getResources(),
@@ -148,32 +155,36 @@ class Emojifier {
 
         // Determine and log the appropriate emoji
         Emoji emoji;
-        if(smiling) {
-            if (leftEyeClosed && !rightEyeClosed) {
-                emoji = Emoji.LEFT_WINK;
-            }  else if(rightEyeClosed && !leftEyeClosed){
-                emoji = Emoji.RIGHT_WINK;
-            } else if (leftEyeClosed){
-                emoji = Emoji.CLOSED_EYE_SMILE;
+        if (TURN_DOWN_FOR_WHAT) {
+            emoji = Emoji.TURN_DOWN_FOR_WHAT;
+        }else {
+            if (smiling) {
+                if (leftEyeClosed && !rightEyeClosed) {
+                    emoji = Emoji.LEFT_WINK;
+                } else if (rightEyeClosed && !leftEyeClosed) {
+                    emoji = Emoji.RIGHT_WINK;
+                } else if (leftEyeClosed) {
+                    emoji = Emoji.CLOSED_EYE_SMILE;
+                } else {
+                    emoji = Emoji.SMILE;
+                }
             } else {
-                emoji = Emoji.SMILE;
-            }
-        } else {
-            if (leftEyeClosed && !rightEyeClosed) {
-                emoji = Emoji.LEFT_WINK_FROWN;
-            }  else if(rightEyeClosed && !leftEyeClosed){
-                emoji = Emoji.RIGHT_WINK_FROWN;
-            } else if (leftEyeClosed){
-                emoji = Emoji.CLOSED_EYE_FROWN;
-            } else {
-                emoji = Emoji.FROWN;
+                if (leftEyeClosed && !rightEyeClosed) {
+                    emoji = Emoji.LEFT_WINK_FROWN;
+                } else if (rightEyeClosed && !leftEyeClosed) {
+                    emoji = Emoji.RIGHT_WINK_FROWN;
+                } else if (leftEyeClosed) {
+                    emoji = Emoji.CLOSED_EYE_FROWN;
+                } else {
+                    emoji = Emoji.FROWN;
+                }
             }
         }
 
 
         // Log the chosen Emoji
         Timber.d("whichEmoji: " + emoji.name());
-        
+
         // return the chosen Emoji
         return emoji;
     }
@@ -193,7 +204,7 @@ class Emojifier {
                 backgroundBitmap.getHeight(), backgroundBitmap.getConfig());
 
         // Scale the emoji so it looks better on the face
-        float scaleFactor = EMOJI_SCALE_FACTOR;
+        float scaleFactor = TURN_DOWN_FOR_WHAT ? TURN_DOWN_FOR_WHAT_SCALE_FACTOR : EMOJI_SCALE_FACTOR;
 
         // Determine the size of the emoji to match the width of the face and preserve aspect ratio
         int newEmojiWidth = (int) (face.getWidth() * scaleFactor);
@@ -205,11 +216,19 @@ class Emojifier {
         emojiBitmap = Bitmap.createScaledBitmap(emojiBitmap, newEmojiWidth, newEmojiHeight, false);
 
         // Determine the emoji position so it best lines up with the face
-        float emojiPositionX =
-                (face.getPosition().x + face.getWidth() / 2) - emojiBitmap.getWidth() / 2;
-        float emojiPositionY =
-                (face.getPosition().y + face.getHeight() / 2) - emojiBitmap.getHeight() / 3;
-
+        float emojiPositionX;
+        float emojiPositionY;
+        if (TURN_DOWN_FOR_WHAT){
+            emojiPositionX =
+                    (face.getPosition().x + face.getWidth() / 2) - emojiBitmap.getWidth() / 1.66f;
+            emojiPositionY =
+                    (face.getPosition().y + face.getHeight() / 2) - emojiBitmap.getHeight() / 3;
+        }else {
+            emojiPositionX =
+                    (face.getPosition().x + face.getWidth() / 2) - emojiBitmap.getWidth() / 2;
+            emojiPositionY =
+                    (face.getPosition().y + face.getHeight() / 2) - emojiBitmap.getHeight() / 3;
+        }
         // Create the canvas and draw the bitmaps to it
         Canvas canvas = new Canvas(resultBitmap);
         canvas.drawBitmap(backgroundBitmap, 0, 0, null);
@@ -217,7 +236,7 @@ class Emojifier {
 
         return resultBitmap;
     }
-    
+
 
     // Enum for all possible Emojis
     private enum Emoji {
@@ -228,7 +247,8 @@ class Emojifier {
         LEFT_WINK_FROWN,
         RIGHT_WINK_FROWN,
         CLOSED_EYE_SMILE,
-        CLOSED_EYE_FROWN
+        CLOSED_EYE_FROWN,
+        TURN_DOWN_FOR_WHAT
     }
 
 }
