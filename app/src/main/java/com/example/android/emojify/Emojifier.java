@@ -20,10 +20,12 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.util.SparseArray;
 import android.widget.Toast;
 
 import com.google.android.gms.vision.Frame;
+import com.google.android.gms.vision.Frame.Builder;
 import com.google.android.gms.vision.face.Face;
 import com.google.android.gms.vision.face.FaceDetector;
 
@@ -51,17 +53,20 @@ class Emojifier {
                 .setClassificationType(FaceDetector.ALL_CLASSIFICATIONS)
                 .build();
 
-        // Build the frame
-        Frame frame = new Frame.Builder().setBitmap(picture).build();
 
-        // Detect the faces
-        SparseArray<Face> faces = detector.detect(frame);
+            Matrix matrix = new Matrix();
+            matrix.postRotate(270);
+            Bitmap rotated_pic = Bitmap.createBitmap(picture, 0, 0, picture.getWidth(), picture.getHeight(), matrix, true);
+            //Frame frame = new Builder().setBitmap(picture).setRotation(3).build();
+            Frame frame = new Builder().setBitmap(rotated_pic).build();
+            SparseArray<Face> faces = detector.detect(frame);
+
 
         // Log the number of faces
         Timber.d("detectFaces: number of faces = " + faces.size());
 
         // Initialize result bitmap to original picture
-        Bitmap resultBitmap = picture;
+        Bitmap resultBitmap = rotated_pic;
 
         // If there are no faces detected, show a Toast message
         if (faces.size() == 0) {
