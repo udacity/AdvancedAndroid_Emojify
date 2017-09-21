@@ -62,8 +62,9 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.title_text_view) TextView mTitleTextView;
 
     private String mTempPhotoPath;
-
+    private String mFinalPhotoPath = "";
     private Bitmap mResultsBitmap;
+    private Boolean mImageIsSaved = false;
 
 
     @Override
@@ -190,6 +191,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Set the new bitmap to the ImageView
         mImageView.setImageBitmap(mResultsBitmap);
+        mImageIsSaved = false;
     }
 
 
@@ -202,7 +204,11 @@ public class MainActivity extends AppCompatActivity {
         BitmapUtils.deleteImageFile(this, mTempPhotoPath);
 
         // Save the image
-        BitmapUtils.saveImage(this, mResultsBitmap);
+        if (mImageIsSaved == false) {
+            mFinalPhotoPath = BitmapUtils.saveImage(this, mResultsBitmap);
+            mImageIsSaved = true;} else {
+            Toast.makeText(this, "Image is already saved ;-)", Toast.LENGTH_SHORT).show();
+        }
     }
 
     /**
@@ -214,10 +220,14 @@ public class MainActivity extends AppCompatActivity {
         BitmapUtils.deleteImageFile(this, mTempPhotoPath);
 
         // Save the image
-        BitmapUtils.saveImage(this, mResultsBitmap);
+        if (mImageIsSaved == false) {
+            mFinalPhotoPath = BitmapUtils.saveImage(this, mResultsBitmap);
+            mImageIsSaved = true;} else {
+            Toast.makeText(this, "Image is already saved ;-)", Toast.LENGTH_SHORT).show();
+        }
 
         // Share the image
-        BitmapUtils.shareImage(this, mTempPhotoPath);
+        BitmapUtils.shareImage(this, mFinalPhotoPath);
     }
 
     /**
