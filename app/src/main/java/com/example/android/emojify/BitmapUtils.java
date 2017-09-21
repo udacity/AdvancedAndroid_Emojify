@@ -108,8 +108,8 @@ class BitmapUtils {
 
         // If there is an error deleting the file, show a Toast
         if (!deleted) {
-            String errorMessage = context.getString(R.string.error);
-            Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show();
+            // String errorMessage = context.getString(R.string.error);
+            // Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show();
         }
 
         return deleted;
