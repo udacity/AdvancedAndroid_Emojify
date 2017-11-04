@@ -42,7 +42,7 @@ import java.io.IOException;
 public class MainActivity extends AppCompatActivity {
 
     private static final int REQUEST_IMAGE_CAPTURE = 1;
-    private static final int REQUEST_STORAGE_PERMISSION = 1;
+    private static final int REQUEST_STORAGE__AND_CAMERA_PERMISSION = 1;
 
     private static final String FILE_PROVIDER_AUTHORITY = "com.example.android.fileprovider";
 
@@ -79,17 +79,32 @@ public class MainActivity extends AppCompatActivity {
      *
      * @param view The emojify me button.
      */
-    public void emojifyMe(View view) {
+    public void emojifyMe(View view) {      
+        // Create a List containing all the required permissions
+        List<String> permissionsNeeded = new ArrayList<String>();
+        
         // Check for the external storage permission
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
-
-            // If you do not have permission, request it
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                    REQUEST_STORAGE_PERMISSION);
-        } else {
+            // If you do not have permission, add it to the list
+            permissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        }
+        // Check for the camera usage permission
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+            // If you do not have permission, add it to the list
+            permissionsNeeded.add(Manifest.permission.CAMERA);   
+         } 
+         // Check if some permissions are required
+         if(permissionsNeeded.size() > 0){
+             // Then request the permissions
+             ActivityCompat.requestPermissions(this,
+                    permissionsNeeded.toArray(new String[0]),
+                    REQUEST_STORAGE_AND_CAMERA_PERMISSION);
+         }
+         else {
             // Launch the camera if the permission exists
             launchCamera();
         }
@@ -100,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
             @NonNull int[] grantResults) {
         // Called when you request permission to read and write to external storage
         switch (requestCode) {
-            case REQUEST_STORAGE_PERMISSION: {
+            case REQUEST_STORAGE_AND_CAMERA_PERMISSION: {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // If you get permission, launch the camera
