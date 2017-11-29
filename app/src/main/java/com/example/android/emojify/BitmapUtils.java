@@ -71,7 +71,7 @@ class BitmapUtils {
         bmOptions.inJustDecodeBounds = false;
         bmOptions.inSampleSize = scaleFactor;
 
-        return BitmapFactory.decodeFile(imagePath);
+        return BitmapFactory.decodeFile(imagePath, bmOptions);
     }
 
     /**
