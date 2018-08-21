@@ -43,14 +43,20 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+
 public class MainActivity extends AppCompatActivity {
 
     //  (2): Replace all View declarations with Butterknife annotations
+
+
+public class MainActivity extends AppCompatActivity {
+
 
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final int REQUEST_STORAGE_PERMISSION = 1;
 
     private static final String FILE_PROVIDER_AUTHORITY = "com.example.android.fileprovider";
+
 
     @BindView(R.id.image_view)
     ImageView mImageView;
@@ -70,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.title_text_view)
     TextView mTitleTextView;
 
+
     private String mTempPhotoPath;
 
     private Bitmap mResultsBitmap;
@@ -79,18 +86,20 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         ButterKnife.bind(this);
         //  (3): Replace the findViewById calls with the Butterknife data binding
         // Bind the views
+
+
 
     }
 
     /**
      * OnClick method for "Emojify Me!" Button. Launches the camera app.
-     *
-     * @param view The emojify me button.
      */
-    public void emojifyMe(View view) {
+    @OnClick(R.id.emojify_button)
+    public void emojifyMe() {
         // Check for the external storage permission
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -199,6 +208,7 @@ public class MainActivity extends AppCompatActivity {
         // Set the new bitmap to the ImageView
         mImageView.setImageBitmap(mResultsBitmap);
     }
+
 
 
     //  (4): Replace OnClick methods with Butterknife annotations for OnClicks

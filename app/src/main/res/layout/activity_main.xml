@@ -13,7 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.-->
 
-<!--  (5): Remove all the onClick methods in the XML -->
+
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -52,7 +52,6 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:onClick="emojifyMe"
         android:text="@string/go"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"/>
 
