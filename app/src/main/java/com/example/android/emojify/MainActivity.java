@@ -42,7 +42,12 @@ import java.io.IOException;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import timber.log.Timber;
+
+
+public class MainActivity extends AppCompatActivity {
+
+    //  (2): Replace all View declarations with Butterknife annotations
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -52,14 +57,25 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String FILE_PROVIDER_AUTHORITY = "com.example.android.fileprovider";
 
-    @BindView(R.id.image_view) ImageView mImageView;
 
-    @BindView(R.id.emojify_button) Button mEmojifyButton;
-    @BindView(R.id.share_button) FloatingActionButton mShareFab;
-    @BindView(R.id.save_button) FloatingActionButton mSaveFab;
-    @BindView(R.id.clear_button) FloatingActionButton mClearFab;
+    @BindView(R.id.image_view)
+    ImageView mImageView;
 
-    @BindView(R.id.title_text_view) TextView mTitleTextView;
+    @BindView(R.id.emojify_button)
+    Button mEmojifyButton;
+
+    @BindView(R.id.share_button)
+    FloatingActionButton mShareFab;
+
+    @BindView(R.id.save_button)
+    FloatingActionButton mSaveFab;
+
+    @BindView(R.id.clear_button)
+    FloatingActionButton mClearFab;
+
+    @BindView(R.id.title_text_view)
+    TextView mTitleTextView;
+
 
     private String mTempPhotoPath;
 
@@ -71,11 +87,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Bind the views
         ButterKnife.bind(this);
+        //  (3): Replace the findViewById calls with the Butterknife data binding
+        // Bind the views
 
-        // Set up Timber
-        Timber.plant(new Timber.DebugTree());
+
+
     }
 
     /**
@@ -100,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-            @NonNull int[] grantResults) {
+                                           @NonNull int[] grantResults) {
         // Called when you request permission to read and write to external storage
         switch (requestCode) {
             case REQUEST_STORAGE_PERMISSION: {
@@ -192,6 +209,9 @@ public class MainActivity extends AppCompatActivity {
         mImageView.setImageBitmap(mResultsBitmap);
     }
 
+
+
+    //  (4): Replace OnClick methods with Butterknife annotations for OnClicks
 
     /**
      * OnClick method for the save button.
